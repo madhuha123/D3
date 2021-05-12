@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<link rel="stylesheet" href="my-styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+
+    div#layout {
+        text-align: center;
+    }
+
+    div#container {
+        width: 1000px;
+        height: 600px;
+        margin: auto;
+        background-color: #2F4A6D;
+    }
+
+    svg {
+        /* width: 100%; */
+        height: 100%;
+        margin-top: 1.5rem;
+    }
+
+    .bar {
+        fill: #80cbc4;
+    }
+
+    text {
+        font-size: 12px;
+        fill: #fff;
+    }
+
+    path {
+        stroke: gray;
+    }
+
+    line {
+        stroke: gray;
+    }
+
+    line#limit {
+        stroke: #FED966;
+        stroke-width: 3;
+        stroke-dasharray: 3 6;
+    }
+
+    .grid path {
+        stroke-width: 0;
+    }
+
+    .grid .tick line {
+        stroke: #9FAAAE;
+        stroke-opacity: 0.3;
+    }
+
+    text.divergence {
+        font-size: 14px;
+        fill: #2F4A6D;
+    }
+
+    text.value {
+        font-size: 14px;
+    }
+
+    text.title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    text.label {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    text.source {
+        font-size: 10px;
+    }
+
+    text {
+        fill: black;
+    }
+
+    .select-dropdown,
+    .select-dropdown * {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .select-dropdown {
+        position: relative;
+        background-color: #E6E6E6;
+        border-radius: 4px;
+    }
+
+    .select-dropdown select {
+        font-size: 1rem;
+        font-weight: normal;
+        max-width: 100%;
+        padding: 8px 24px 8px 10px;
+        border: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .select-dropdown select:active,
+    .select-dropdown select:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .select-dropdown:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        width: 0;
+        height: 0;
+        margin-top: -2px;
+        border-top: 5px solid #aaa;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+    }
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .title-holder {
+        text-align: center;
+    }
+
+    .title {
+        font-family: 'Lato', sans-serif;
+    }
+
+    .subtitle {
+        font-size: 20px;
+    }
+
+    .font {
+        font-size: 18px;
+    }
+
+    /* legend */
+    .legend {
+        font-size: 14px;
+    }
+
+    rect {
+        cursor: pointer;
+        stroke-width: 2;
+    }
+
+    rect.disabled {
+        fill: transparent !important;
+    }
+
+    /* chart */
+    #chart {
+        height: 800px;
+        margin: 0 auto;
+        position: relative;
+        display: block;
+        width: 1200px;
+    }
+
+    /* tooltip */
+    .tooltip {
+        background: #eee;
+        box-shadow: 0 0 5px #999999;
+        color: #333;
+        display: none;
+        font-size: 18px;
+        left: 130px;
+        padding: 10px;
+        position: absolute;
+        text-align: center;
+        top: 95px;
+        width: 80px;
+        z-index: 10;
+    }
+
+    .footer {
+        padding-top: 50px;
+        text-align: center;
+        list-style-type: none;
+    }
+</style>
+
+<body class="w3-light-grey">
+
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
+            onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-bar-item w3-right">D3 Js Project</span>
+    </div>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+        <div class="w3-container">
+            <header class="w3-container">
+                <h5><b><i class="fa fa-dashboard"></i> NALLI Madhuha </b></h5>
+            </header>
+            <!-- <h5>Dashboard</h5> -->
+        </div>
+        <div class="w3-bar-block">
+            <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+            <a href="/dashboard1.html" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-bar-chart fa-fw"></i> PostalArea vs Status
+            </a>
+            <a href="/dashboard2.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bar-chart fa-fw"></i> 
+            Status vs Percentage of Marks </a>
+            <br><br>
+        </div>
+    </nav>
+
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+        title="close side menu" id="myOverlay"></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+        <div class="w3-panel">
+                        <br>
+            <h2>Status <small>vs</small> Percentage of Marks</h2>
+            <div class="w3-panel" style="display: flex;">
+                <div class="select-dropdown"> <!-- DROP DOWN -->
+                    <select name="sort" onchange="sortGraph(this)" id="sort">
+                        <option value="descending" selected>Sort by Descending</option>
+                        <option value="ascending">Sort by Ascending</option>
+                    </select>
+                </div>
+            </div>
+            <div id="chart"></div> <!-- CHART VISIBILE HERE -->
+        </div>
+    </div>
+
+    <script>
+        // Get the Sidebar
+        var mySidebar = document.getElementById("mySidebar");
+
+        // Get the DIV with overlay effect
+        var overlayBg = document.getElementById("myOverlay");
+
+        // Toggle between showing and hiding the sidebar, and add overlay effect
+        function w3_open() {
+            if (mySidebar.style.display === 'block') {
+                mySidebar.style.display = 'none';
+                overlayBg.style.display = "none";
+            } else {
+                mySidebar.style.display = 'block';
+                overlayBg.style.display = "block";
+            }
+        }
+
+        // Close the sidebar with the close button
+        function w3_close() {
+            mySidebar.style.display = "none";
+            overlayBg.style.display = "none";
+        }
+    </script>
+    
+    
+    
+    
+    
+    
+    <!-- D3 js code starts here -->
+    
+    
+    <script>
+
+
+        //Read the data
+        d3.csv("datasets/status_marks.csv").then((res) => {
+            stats = res.slice(1).reduce((prev, nxt) => {
+                nxt = Object.values(nxt)[0].split(';');
+                prev[nxt[7]] = prev[nxt[7]] || {};
+                prev[nxt[7]] = {
+                    count: (prev[nxt[7]].count || 0) + parseFloat(nxt[3]),
+                    total: (prev[nxt[7]].total || 0) + 1
+                }
+                return prev;
+            }, {});
+            updateStats(stats);
+        });
+        function sortGraph(event) {
+            updateStats(stats);
+        }
+        
+        // Now I can use this dataset:
+        function updateStats(data) {
+            d3.selectAll("svg").remove();
+            const sort = document.querySelector('#sort').value == 'descending';
+            // let total = 0;
+            let dataset = Object.keys(data).map((key) => {
+                return {
+                    label: key,
+                    count: (data[key].count / data[key].total).toFixed(2)
+                }
+            })
+                .sort((a, b) => sort ? d3.ascending(b.count, a.count) : d3.ascending(a.count, b.count));
+            console.log(data);
+            // define data
+
+            
+            // chart dimensions
+            var width = 600;
+            var height = 400;
+
+            // a circle chart needs a radius
+            var radius = Math.min(width, height) / 2;
+
+            // legend dimensions
+            var legendRectSize = 25; // defines the size of the colored squares in legend
+            var legendSpacing = 6; // defines spacing between squares
+
+            // define color scale
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
+            // more color scales: https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
+
+            var svg = d3.select('#chart') // select element in the DOM with id 'chart'
+                .append('svg') // append an svg element to the element we've selected
+                .attr('width', width) // set the width of the svg element we just added
+                .attr('height', height) // set the height of the svg element we just added
+                .append('g') // append 'g' element to the svg element
+                .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')'); // our reference is now to the 'g' element. centerting the 'g' element to the svg element
+
+            var arc = d3.arc()
+                .innerRadius(0) // none for pie chart
+                .outerRadius(radius); // size of overall chart
+
+            var pie = d3.pie() // start and end angles of the segments
+                .value(function (d) { return d.count; }) // how to extract the numerical data from each entry in our dataset
+                .sort(null); // by default, data sorts in oescending value. this will mess with our animation so we set it to null
+
+            // define tooltip
+            var tooltip = d3.select('#chart') // select element in the DOM with id 'chart'
+                .append('div') // append a div element to the element we've selected                                    
+                .attr('class', 'tooltip'); // add class 'tooltip' on the divs we just selected
+
+            tooltip.append('div') // add divs to the tooltip defined above                            
+                .attr('class', 'label'); // add class 'label' on the selection                         
+
+            tooltip.append('div') // add divs to the tooltip defined above                     
+                .attr('class', 'count'); // add class 'count' on the selection                  
+
+            tooltip.append('div') // add divs to the tooltip defined above  
+                .attr('class', 'percent'); // add class 'percent' on the selection
+
+
+
+            dataset.forEach(function (d) {
+                d.count = +d.count; // calculate count as we iterate through the data
+                d.enabled = true; // add enabled property to track which entries are checked
+            });
+
+            
+            // creating the chart
+            var path = svg.selectAll('path') // select all path elements inside the svg. specifically the 'g' element. they don't exist yet but they will be created below
+                .data(pie(dataset)) //associate dataset wit he path elements we're about to create. must pass through the pie function. it magically knows how to extract values and bakes it into the pie
+                .enter() //creates placeholder nodes for each of the values
+                .append('path') // replace placeholders with path elements
+                .attr('d', arc) // define d attribute with arc function above
+                .attr('fill', function (d) { return color(d.data.label); }) // use color scale to define fill of each label in dataset
+                .each(function (d) { this._current - d; }); // creates a smooth animation for each track
+
+            // mouse event handlers are attached to path so they need to come after its definition
+            path.on('mouseover', function (d) {  // when mouse enters div      
+                var total = d3.sum(dataset.map(function (d) { // calculate the total number of tickets in the dataset         
+                    return (d.enabled) ? d.count : 0; // checking to see if the entry is enabled. if it isn't, we return 0 and cause other percentages to increase                                      
+                }));
+                var percent = Math.round(1000 * d.data.count / total) / 10; // calculate percent
+                tooltip.select('.label').html(d.data.label); // set current label           
+                //tooltip.select('.count').html('$' + d.data.count); // set current count            
+                tooltip.select('.percent').html(percent + '%'); // set percent calculated above          
+                tooltip.style('display', 'block'); // set display                     
+            });
+
+            path.on('mouseout', function () { // when mouse leaves div                        
+                tooltip.style('display', 'none'); // hide tooltip for that element
+            });
+
+            path.on('mousemove', function (d) { // when mouse moves                  
+                tooltip.style('top', (d3.event.layerY + 10) + 'px') // always 10px below the cursor
+                    .style('left', (d3.event.layerX + 10) + 'px'); // always 10px to the right of the mouse
+            });
+
+            // define legend
+            var legend = svg.selectAll('.legend') // selecting elements with class 'legend'
+                .data(color.domain()) // refers to an array of labels from our dataset
+                .enter() // creates placeholder
+                .append('g') // replace placeholders with g elements
+                .attr('class', 'legend') // each g is given a legend class
+                .attr('transform', function (d, i) {
+                    var height = legendRectSize + legendSpacing; // height of element is the height of the colored square plus the spacing      
+                    var offset = height * color.domain().length / 2; // vertical offset of the entire legend = height of a single element & half the total number of elements  
+                    var horz = 18 * legendRectSize; // the legend is shifted to the left to make room for the text
+                    var vert = i * height - offset; // the top of the element is hifted up or down from the center using the offset defiend earlier and the index of the current element 'i'               
+                    return 'translate(' + horz + ',' + vert + ')'; //return translation       
+                });
+
+            // adding colored squares to legend
+            legend.append('rect') // append rectangle squares to legend                                   
+                .attr('width', legendRectSize) // width of rect size is defined above                        
+                .attr('height', legendRectSize) // height of rect size is defined above                      
+                .style('fill', color) // each fill is passed a color
+                .style('stroke', color) // each stroke is passed a color
+                .on('click', function (label) {
+                    var rect = d3.select(this); // this refers to the colored squared just clicked
+                    var enabled = true; // set enabled true to default
+                    var totalEnabled = d3.sum(dataset.map(function (d) { // can't disable all options
+                        return (d.enabled) ? 1 : 0; // return 1 for each enabled entry. and summing it up
+                    }));
+
+                    if (rect.attr('class') === 'disabled') { // if class is disabled
+                        rect.attr('class', ''); // remove class disabled
+                    } else { // else
+                        if (totalEnabled < 2) return; // if less than two labels are flagged, exit
+                        rect.attr('class', 'disabled'); // otherwise flag the square disabled
+                        enabled = false; // set enabled to false
+                    }
+
+                    pie.value(function (d) {
+                        if (d.label === label) d.enabled = enabled; // if entry label matches legend label
+                        return (d.enabled) ? d.count : 0; // update enabled property and return count or 0 based on the entry's status
+                    });
+
+                    path = path.data(pie(dataset)); // update pie with new data
+
+                    path.transition() // transition of redrawn pie
+                        .duration(750) // 
+                        .attrTween('d', function (d) { // 'd' specifies the d attribute that we'll be animating
+                            var interpolate = d3.interpolate(this._current, d); // this = current path element
+                            this._current = interpolate(0); // interpolate between current value and the new value of 'd'
+                            return function (t) {
+                                return arc(interpolate(t));
+                            };
+                        });
+                });
+
+            // adding text to legend
+            legend.append('text')
+                .attr('x', legendRectSize + legendSpacing)
+                .attr('y', legendRectSize - legendSpacing)
+                .text(function (d) { return d; }); // return label
+
+
+            var data_ready = pie(dataset);
+            // The arc generator
+            var arc = d3.arc()
+                .innerRadius(radius * 0.5)         // This is the size of the donut hole
+                .outerRadius(radius * 0.8)
+
+            // Another arc that won't be drawn. Just for labels positioning
+            var outerArc = d3.arc()
+                .innerRadius(radius * 0.9)
+                .outerRadius(radius * 0.9)
+            // Add the polylines between chart and labels:
+            svg
+                .selectAll('allPolylines')
+                .data(data_ready)
+                .enter()
+                .append('polyline')
+                .attr("stroke", "black")
+                .style("fill", "none")
+                .attr("stroke-width", 1)
+                .attr('points', function (d) {
+                    var posA = arc.centroid(d) // line insertion in the slice
+                    var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
+                    var posC = outerArc.centroid(d); // Label position = almost the same as posB
+                    var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
+                    posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+                    return [posA, posB, posC]
+                })
+
+            // Add the polylines between chart and labels:
+            svg
+                .selectAll('allLabels')
+                .data(data_ready)
+                .enter()
+                .append('text')
+                .text(function (d) {
+                    return d.data.label
+                })
+                .attr('transform', function (d) {
+                    var pos = outerArc.centroid(d);
+                    var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                    pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
+                    return 'translate(' + pos + ')';
+                })
+                .style('text-anchor', function (d) {
+                    var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                    return (midangle < Math.PI ? 'start' : 'end')
+                })
+
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<link rel="stylesheet" href="my-styles.css">
+    
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+
+    div#layout {
+        text-align: center;
+    }
+
+    div#container {
+        width: 1000px;
+        height: 600px;
+        margin: auto;
+        background-color: #2F4A6D;
+    }
+
+    svg {
+        /* width: 100%; */
+        height: 100%;
+        margin-top: 1.5rem;
+    }
+
+    .bar {
+        fill: #80cbc4;
+    }
+
+    text {
+        font-size: 12px;
+        fill: #fff;
+    }
+
+    path {
+        stroke: gray;
+    }
+
+    line {
+        stroke: gray;
+    }
+
+    line#limit {
+        stroke: #FED966;
+        stroke-width: 3;
+        stroke-dasharray: 3 6;
+    }
+
+    .grid path {
+        stroke-width: 0;
+    }
+
+    .grid .tick line {
+        stroke: #9FAAAE;
+        stroke-opacity: 0.3;
+    }
+
+    text.divergence {
+        font-size: 14px;
+        fill: #2F4A6D;
+    }
+
+    text.value {
+        font-size: 14px;
+    }
+
+    text.title {
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    text.label {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    text.source {
+        font-size: 10px;
+    }
+
+    text {
+        fill: black;
+    }
+
+    .select-dropdown,
+    .select-dropdown * {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .select-dropdown {
+        position: relative;
+        background-color: #E6E6E6;
+        border-radius: 4px;
+    }
+
+    .select-dropdown select {
+        font-size: 1rem;
+        font-weight: normal;
+        max-width: 100%;
+        padding: 8px 24px 8px 10px;
+        border: none;
+        background-color: transparent;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .select-dropdown select:active,
+    .select-dropdown select:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .select-dropdown:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        width: 0;
+        height: 0;
+        margin-top: -2px;
+        border-top: 5px solid #aaa;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+    }
+
+    .toolTip {
+        position: absolute;
+        display: none;
+        min-width: 80px;
+        height: auto;
+        background: none repeat scroll 0 0 #ffffff;
+        border: 1px solid #6F257F;
+        padding: 14px;
+        text-align: center;
+    }
+</style>
+
+<body class="w3-light-grey">
+
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+        <span class="w3-bar-item w3-right">D3 Js Project</span>
+    </div>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+        <div class="w3-container">
+            <header class="w3-container">
+                <h5><b><i class="fa fa-dashboard"></i>NALLI Madhuha </b></h5>
+                            </header>
+        </div>
+        <div class="w3-bar-block">
+            <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+            <a href="/dashboard1.html" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-bar-chart fa-fw"></i> PostalArea vs Status
+            </a>
+            <a href="/dashboard2.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bar-chart fa-fw"></i> 
+            Status vs Percentage of Marks </a>
+            <br><br>
+        </div>
+    </nav>
+
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+        <div class="w3-panel">
+            <br>
+            <h2>Postal Area <small>vs</small> Status</h2>
+            <div class="w3-panel" style="display: flex;">
+                <div class="select-dropdown">
+                    <select name="postal codes" onchange="onPostalCodeChange(this)" id="postal_codes"></select>
+                </div>
+                <div style="margin-left: 20px;" class="select-dropdown">
+                    <select name="sort" onchange="sortGraph(this)" id="sort">
+                        <option value="descending" selected>Sort by Descending</option>
+                        <option value="ascending">Sort by Ascending</option>
+                    </select>
+                </div>
+            </div>
+            <svg width="600" height="400"></svg>
+        </div>
+    </div>
+
+    <script>
+        // Get the Sidebar
+        var mySidebar = document.getElementById("mySidebar");
+
+        // Get the DIV with overlay effect
+        var overlayBg = document.getElementById("myOverlay");
+
+        // Toggle between showing and hiding the sidebar, and add overlay effect
+        function w3_open() {
+            if (mySidebar.style.display === 'block') {
+                mySidebar.style.display = 'none';
+                overlayBg.style.display = "none";
+            } else {
+                mySidebar.style.display = 'block';
+                overlayBg.style.display = "block";
+            }
+        }
+
+        // Close the sidebar with the close button
+        function w3_close() {
+            mySidebar.style.display = "none";
+            overlayBg.style.display = "none";
+        }
+    </script>
+    <script>
+        var postalCodes = new Set();
+        var stats = {};
+        d3.csv("datasets/status_postalarea.csv").then((res) => {
+            stats = res.slice(1).reduce((prev, nxt) => {
+                nxt = Object.values(nxt)[0].split(';');
+                prev[nxt[17]] = prev[nxt[17]] || {};
+                prev[nxt[17]][nxt[9]] = (prev[nxt[17]][nxt[9]] || 0) + 1;
+                postalCodes.add(nxt[17]);
+                return prev;
+            }, {});
+            postalCodes = Array.from(postalCodes);
+            document.querySelector('#postal_codes').innerHTML = postalCodes.map((each) => `<option value="${each}">${each}</option>`).join('');
+            document.querySelector('#postal_codes').value = postalCodes[0];
+            updateStats(postalCodes[0]);
+        });
+
+        function onPostalCodeChange(event) {
+            updateStats(event.value);
+        }
+
+        function sortGraph(event) {
+            updateStats(document.querySelector('#postal_codes').value);
+        }
+
+        function updateStats(postalCode) {
+            var colours = d3.scaleOrdinal(d3.schemeCategory10);
+            const sort = document.querySelector('#sort').value == 'descending';
+            d3.selectAll("svg > *").remove();
+            let data = stats[postalCode];
+            if (!data) {
+                window.alert('No Data Found');
+                return;
+            }
+            data = Object.keys(data).map((key) => {
+                return {
+                    statusName: key,
+                    count: data[key]
+                }
+            }).sort((a, b) => sort ? d3.ascending(b.count, a.count) : d3.ascending(a.count, b.count));
+            const svg = d3.select("svg"),
+                margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 30,
+                    left: 40
+                },
+                width = +svg.attr("width") - margin.left - margin.right,
+                height = +svg.attr("height") - margin.top - margin.bottom,
+                x = d3.scaleBand().rangeRound([0, width]).padding(0.2),
+                y = d3.scaleLinear().rangeRound([height, 0]),
+                g = svg.append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+            x.domain(data.map(d => d.statusName));
+            y.domain([0, d3.max(data, d => d.count)]);
+            // define color scale
+            g.append("g")
+                .attr("class", "axis axis-x")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x));
+
+            g.append("g")
+                .attr("class", "axis axis-y")
+                .call(d3.axisLeft(y).ticks(10));
+            var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+            g.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                // .attr("class", "bar")
+                .attr("x", d => x(d.statusName))
+                .attr("y", d => y(d.count))
+                .attr("width", x.bandwidth())
+                .attr("height", d => height - y(d.count))
+                .attr("fill", function(d) {
+                    return colours(d.statusName);
+                })
+                .on("mouseover", function(d) {
+                    tooltip
+                        .style("left", d3.event.pageX - 50 + "px")
+                        .style("top", d3.event.pageY - 70 + "px")
+                        .style("display", "inline-block")
+                        .html((d.statusName) + "<br>" + (d.count));
+                })
+                .on("mouseout", function(d) {
+                    tooltip.style("display", "none");
+                });
+            svg.append("text")
+                .attr("x", (width / 2))
+                .attr("y", (margin.top / 1.4))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                //.style("text-decoration", "underline")
+                //.text("Postal vs Status Stats");
+        }
+    </script>
+
+</body></html>
